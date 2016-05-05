@@ -57,7 +57,7 @@ public class Main {
 				//PREENCHE O OBJETO PRODUTO
 				if(linha.length()>0 && flagProduct == true){
 					if(linha.contains("ASIN:")){
-						//COLETA O ID DO PRO
+						//COLETA O ID DO PROUTO, ESSE ID SERÁ USADO COM OCHAVE EM UM HASH MAP PARA IMPEDIR DUPLICATAS
 						linha = linha.replace(" ", "");
 						linha = linha.replace("ASIN:", "");
 						product.setAsin(linha);
@@ -66,11 +66,14 @@ public class Main {
 					}
 					
 					if(linha.contains("title:")){
+						//COLTEA O TÍTULO DO PRODUTO
 						linha = linha.replace("title: ", "");
 						product.setTitle(linha);
 					}
 					
 					if(linha.contains("group:")){
+						//COLETA O CGRUPO AO QUAL O PRODUTO PERTENCE.
+						//ESSA INFORMAÇÃO DE GRUPO, TAMBÉM SERÁ GUARDADA EM UM HASH PARA EVITAR DUPLICATAS
 						linha = linha.replace("group: ", "");
 						if(!hmGroups.containsKey(linha)){
 							Group group = new Group();
@@ -80,6 +83,7 @@ public class Main {
 						product.setGroup(hmGroups.get(linha));
 					}
 					
+					//COLETA OS PRODUTOS DESCONTINUADOS
 					if(linha.contains("discontinued")){
 						linha = linha.replace(" product", "");
 						linha = linha.replace(" ", "");
@@ -91,6 +95,8 @@ public class Main {
 						product.setGroup(hmGroups.get(linha));
 					}
 					
+					//COLETA OS USUÁRIOS
+					//OS USUÁRIOS SÃO LISTADOS EM CADA UM DOS PRODUTOS, MAS TAMBÉM SÃO ARMAZENADOS EM UM HASH PARA EVITAR DUPLICATAS
 					if(linha.contains("cutomer: ")){
 						int a= linha.indexOf("cutomer: ");
 						int b = linha.indexOf("  rating:");
@@ -105,15 +111,18 @@ public class Main {
 					}
 				}
 				
-				//produto acabou
+				//MARCA O FIM DE UM PRODUTO
+				//A VARIAVEL SALTO USADA NO PRIMEIRO IF, GARANTE QUE ESTE IF NÃO SERA ACEITO CASO ESTEJA NO MESMO LOOP EM QUE O SALTO FOI MARCADO
 				if(linha.length()==0 && flagProduct == true && salto == 0){
 					hmProducts.put(productAsin, product);
 					product = null;
 					flagProduct=false;
 				}
 				
-				salto=0;//agora vai entrar no ultimo if no proximo loop
+				//AGORA QUE O IF FINAL FOI SALTADO, O SALTO É DESMARCADO PARA QUE O ULTIMO IF SEJA VALIDO NO FIM DE UM PRODUTO
+				salto=0;
 								
+				//LÂ A PRÓXIMA LINHA DO ARQUIVO
 				linha = lerArq.readLine();
 			} 
 			
