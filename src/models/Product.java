@@ -9,6 +9,16 @@ public class Product {
 	HashMap<String,Customer> listCustomer = new HashMap<String,Customer>();
 	Group group;
 	
+	int costEvaluation=0;
+	
+	public int getCostEvaluation() {
+		return costEvaluation;
+	}
+
+	public void setCostEvaluation(int costEvaluation) {
+		this.costEvaluation = costEvaluation;
+	}
+
 	public String getAsin() {
 		return asin;
 	}
